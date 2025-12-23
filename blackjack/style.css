@@ -37,6 +37,9 @@ body.ended #overlay {
     text-align: center;
     height: 240px;
 }
+#double{
+    display: none;
+}
 input{
     font-family: "Jersey 10", sans-serif;
     font-weight: 400;
@@ -91,6 +94,12 @@ input{
 #chipsLeft{
     position: absolute;
     top: 75%;
+    color: white;
+    font-size: 50px;
+}
+#current{
+    position: absolute;
+    top: 69%;
     color: white;
     font-size: 50px;
 }
