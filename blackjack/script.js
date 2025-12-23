@@ -2,6 +2,7 @@
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+const cardSound = new Audio('sounds/cardsound32562-37691.mp3');
 const suits = ["C", "D", "H", "S"];
 const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const cardsPlayer = [];
@@ -31,10 +32,16 @@ function startGame() {
     }
     cardsPlayer.length = 0;
     cardsDealer.length = 0;
-    startRound();
+    document.getElementById("start").style.display = "none";
+    changeDeckSize();
 }
 
 async function endRound(type, win) {
+    document.getElementById("double").style.display = "none";
+    document.getElementById("hit").style.display = "none";
+    document.getElementById("stay").style.display = "none";
+    document.getElementById("start").style.display = "none";
+    changeChips();
     started=false;
     if(win===1){
         playerChips += currBet*2;
@@ -84,6 +91,10 @@ async function startRound() {
     if(started) {
         return;
     }
+    document.getElementById("double").style.display = "inline-block";
+    document.getElementById("hit").style.display = "inline-block";
+    document.getElementById("stay").style.display = "inline-block";
+    document.getElementById("start").style.display = "none";
     offsetP=1;
     offsetD=1;
     for (const c of cardsPlayer) {
@@ -115,19 +126,31 @@ async function hit() {
     if (!started) {
         return;
     }
+    document.getElementById("double").style.display = "none";
+    document.getElementById("hit").disabled  = true;
     deal("p");
     await sleep(1500);
     const playerSum = hand("p");
     if (playerSum > 21) {
+        document.getElementById("hit").disabled = false;
         endRound("Bust! Dealer wins!", 0);
+        return false;
     }else if(playerSum===21){
+        document.getElementById("hit").disabled = false;
         endRound("Blackjack! You win!", 2);
+        return false;
     }
+    document.getElementById("hit").disabled = false;
+    return true;
 }
 async function stand() {
     if (!started) {
         return;
     }
+    document.getElementById("double").style.display = "none";
+    document.getElementById("hit").style.display = "none";
+    document.getElementById("stay").style.display = "none";
+
     cardsDealer[0].element.style.backgroundImage = cardsDealer[0].bg;
     await sleep(500);
     let dealerSum = hand("d");
@@ -181,6 +204,7 @@ function drawCard() {
         alert("No more cards left!");
         return null;
     }
+    playSound();
     changeDeckSize();
     const index = Math.floor(Math.random() * deck.length);
     return deck.splice(index, 1)[0];
@@ -217,6 +241,25 @@ function addBet(bet){
         changeChips();
     }
 }
+async function doubleD(){
+    if(playerChips<currBet){
+        alert("Not enough chips to double down!");
+        return;
+    }
+    playerChips-=currBet;
+    currBet*=2;
+    changeChips();
+    const canContinue = await hit();
+    if(canContinue){
+        await stand();
+    }
+}
 function changeChips(){
     document.getElementById("chips").innerHTML = playerChips.toString();
+    document.getElementById("currentBet").innerHTML = currBet.toString();
+
+}
+function playSound() {
+    cardSound.currentTime = 0;
+    cardSound.play();
 }
