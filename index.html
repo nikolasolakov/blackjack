@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="blackjack/script.js" defer ></script>
+    <link rel="stylesheet" href="blackjack/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1 id="end">Blackjack</h1>
+    <div id="container">
+        <input type="button" id="start" value="Start" onclick="startGame()">
+        <input type="button" id="deal" value="Deal" onclick="startRound()">
+        <input type="button" id="hit" value="Hit" onclick="hit()">
+        <input type="button" id="stay" value="Stand" onclick="stand()">
+        <input type="button" id="double" value="Double down" onclick="doubleD()">
+    </div>
+    <div id="deck">
+        <p>Cards left: <a id="deckSize">0</a></p>
+    </div>
+    <div id="car"></div>
+
+    <p id="chipsLeft">Cash left: <a id="chips">1000</a></p>
+    <p id="current">Current bet: <a id="currentBet">0</a></p>
+
+    <div id="bets">
+        <input type="button" class="b" value="10" onclick="addBet(10)">
+        <input type="button" class="b" value="25" onclick="addBet(25)">
+        <input type="button" class="b" value="50" onclick="addBet(50)">
+        <input type="button" class="b" value="100" onclick="addBet(100)">
+    </div>
+</body>
+
+</html>
